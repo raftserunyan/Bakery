@@ -246,32 +246,36 @@ namespace Bakery.Data.Model.Migrations
                 table: "Notifications",
                 column: "CustomerId",
                 principalTable: "Customers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                principalColumn: "Id"
+                //onDelete: ReferentialAction.Cascade
+                );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Notifications_Orders_OrderId",
                 table: "Notifications",
                 column: "OrderId",
                 principalTable: "Orders",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                principalColumn: "Id"
+                //onDelete: ReferentialAction.Cascade
+                );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Orders_Customers_CustomerId",
                 table: "Orders",
                 column: "CustomerId",
                 principalTable: "Customers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                principalColumn: "Id"
+                //onDelete: ReferentialAction.Cascade
+                );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_ShoppingCarts_Customers_CustomerId",
                 table: "ShoppingCarts",
                 column: "CustomerId",
                 principalTable: "Customers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                principalColumn: "Id"
+                //onDelete: ReferentialAction.Cascade
+                );
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

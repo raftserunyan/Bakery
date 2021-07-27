@@ -29,7 +29,7 @@ namespace Bakery
 			});
 
 			services.AddDbContext<BakeryContext>(i =>
-				i.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+				i.UseSqlServer(Configuration.GetConnectionString("RemoteConnection")));
 
 			services.AddRepositoryInjections();
 		}
