@@ -9,7 +9,7 @@ namespace Bakery.Data.Model.Data
 		{
 		}
 
-		protected virtual void OnModelCreating(ModelBuilder builder)
+		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			base.OnModelCreating(builder);
 
@@ -22,6 +22,7 @@ namespace Bakery.Data.Model.Data
 				.HasOne<Customer>(sc => sc.Customer)
 				.WithOne(c => c.ShoppingCart)
 				.HasForeignKey<ShoppingCart>(sc => sc.CustomerId);
+
 		}
 
 
@@ -37,6 +38,6 @@ namespace Bakery.Data.Model.Data
 		public DbSet<CartItem> CartItems { get; set; }
 
 		public DbSet<Product> Products { get; set; }
-		public DbSet<Category> Categories { get; set; }
+		public DbSet<ProductCategory> Categories { get; set; }
 	}
 }
