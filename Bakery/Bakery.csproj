@@ -19,8 +19,4 @@
     <ProjectReference Include="..\Bakery.Data\Bakery.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Mi hat folder\" />
-  </ItemGroup>
-
 </Project>
