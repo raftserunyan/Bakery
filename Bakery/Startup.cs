@@ -12,7 +12,10 @@ namespace Bakery
 {
 	public class Startup
 	{
-
+		/// <summary>
+		/// asdaasd
+		/// </summary>
+		/// <param name="configuration"></param>
 		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;
