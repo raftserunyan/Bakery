@@ -10,6 +10,6 @@ namespace Bakery.Data.Model.Models
 		public decimal UnitPrice { get; set; }
 
 		public int CategoryId { get; set; }
-		public Category Category { get; set; }
+		public ProductCategory Category { get; set; }
 	}
 }

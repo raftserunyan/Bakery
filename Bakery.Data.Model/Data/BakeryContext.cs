@@ -37,6 +37,6 @@ namespace Bakery.Data.Model.Data
 		public DbSet<CartItem> CartItems { get; set; }
 
 		public DbSet<Product> Products { get; set; }
-		public DbSet<Category> Categories { get; set; }
+		public DbSet<ProductCategory> Categories { get; set; }
 	}
 }
