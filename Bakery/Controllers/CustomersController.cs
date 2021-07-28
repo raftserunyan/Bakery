@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Bakery.Data.Interfaces;
 using Bakery.Data.Model.Models;
+using Bakery.Data.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bakery.Controllers
@@ -10,10 +10,10 @@ namespace Bakery.Controllers
 	[ApiController]
 	public class CustomersController : ControllerBase
 	{
-		private readonly ICustomerRepository _customerRepo;
-		public CustomersController(ICustomerRepository customerRepo)
+		private readonly IUnitOfWork _uow;
+		public CustomersController(IUnitOfWork uow)
 		{
-			_customerRepo = customerRepo;
+			_uow = uow;
 		}
 
 		// GET: api/<CustomersController>
