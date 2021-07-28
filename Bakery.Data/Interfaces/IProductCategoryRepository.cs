@@ -2,7 +2,7 @@
 
 namespace Bakery.Data.Interfaces
 {
-	public interface IProductCategoryRepository:IBaseRepository<ProductCategory>
+    public interface IProductCategoryRepository:IBaseRepository<ProductCategory>
     {
     }
 }

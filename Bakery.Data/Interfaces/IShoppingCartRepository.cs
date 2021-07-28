@@ -2,7 +2,7 @@
 
 namespace Bakery.Data.Interfaces
 {
-	public interface IShoppingCartRepository:IBaseRepository<ShoppingCart>
+    public interface IShoppingCartRepository:IBaseRepository<ShoppingCart>
     {
     }
 }

@@ -19,7 +19,7 @@ namespace Bakery.Controllers
 		[HttpGet("{id}")]
 		public async Task<IActionResult> LogIn(int id)
 		{
-			return "value";
+			return Ok();
 		}
 
 		// POST api/<IdentiryController>

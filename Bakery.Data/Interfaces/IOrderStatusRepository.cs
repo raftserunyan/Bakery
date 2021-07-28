@@ -2,7 +2,7 @@
 
 namespace Bakery.Data.Interfaces
 {
-	public interface IOrderStatusRepository :IBaseRepository<OrderStatus>
+    public interface IOrderStatusRepository :IBaseRepository<OrderStatus>
     {
     }
 }

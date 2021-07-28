@@ -5,7 +5,7 @@ using Bakery.Data.Repositories;
 
 namespace Bakery.Data.UnitOfWork
 {
-	public  class UnitOfWork : IUnitOfWork
+	internal class UnitOfWork : IUnitOfWork
 	{
 		public UnitOfWork(BakeryContext context)
 		{
