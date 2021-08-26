@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Bakery.Data.Model\Bakery.Data.Model.csproj" />
     <ProjectReference Include="..\Bakery.Data\Bakery.Data.csproj" />
+    <ProjectReference Include="..\Bakery.Model\Bakery.Model.csproj" />
   </ItemGroup>
 
 </Project>

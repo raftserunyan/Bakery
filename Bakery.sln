@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bakery", "Bakery\Bakery.csproj", "{29D2784C-2EEB-4A60-B403-CD29B01821BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bakery", "Bakery\Bakery.csproj", "{29D2784C-2EEB-4A60-B403-CD29B01821BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bakery.Data", "Bakery.Data\Bakery.Data.csproj", "{F113421E-C92E-4F12-8B7A-228C20D6BC31}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bakery.Data", "Bakery.Data\Bakery.Data.csproj", "{F113421E-C92E-4F12-8B7A-228C20D6BC31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bakery.Data.Model", "Bakery.Data.Model\Bakery.Data.Model.csproj", "{1765E648-A66B-4592-9C9C-BAC1831B200C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bakery.Data.Model", "Bakery.Data.Model\Bakery.Data.Model.csproj", "{1765E648-A66B-4592-9C9C-BAC1831B200C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bakery.Model", "Bakery.Model\Bakery.Model.csproj", "{B6B29EAA-D4BD-4FDE-86BA-01DED40FD739}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{1765E648-A66B-4592-9C9C-BAC1831B200C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1765E648-A66B-4592-9C9C-BAC1831B200C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1765E648-A66B-4592-9C9C-BAC1831B200C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6B29EAA-D4BD-4FDE-86BA-01DED40FD739}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6B29EAA-D4BD-4FDE-86BA-01DED40FD739}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6B29EAA-D4BD-4FDE-86BA-01DED40FD739}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6B29EAA-D4BD-4FDE-86BA-01DED40FD739}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
