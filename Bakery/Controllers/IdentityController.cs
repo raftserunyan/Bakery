@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Bakery.Data.UnitOfWork;
+using Bakery.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bakery.Controllers
