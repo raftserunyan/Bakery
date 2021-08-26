@@ -29,19 +29,16 @@ namespace Bakery.Controllers
 			return Ok();
 		}
 
-		// POST api/<IdentiryController>
 		[HttpPost]
 		public void Post([FromBody] string value)
 		{
 		}
 
-		// PUT api/<IdentiryController>/5
 		[HttpPut("{id}")]
 		public void Put(int id, [FromBody] string value)
 		{
 		}
 
-		// DELETE api/<IdentiryController>/5
 		[HttpDelete("{id}")]
 		public void Delete(int id)
 		{
