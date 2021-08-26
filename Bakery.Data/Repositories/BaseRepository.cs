@@ -4,10 +4,12 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Bakery.Data.Interfaces;
 using Bakery.Data.Model.Data;
+using System.Linq.Expressions;
+using System.Linq;
 
 namespace Bakery.Data.Repositories
 {
-	internal class BaseRepository<T> : IBaseRepository<T> where T : class
+	internal class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
 	{
 		protected readonly BakeryContext _context;
 
@@ -18,49 +20,259 @@ namespace Bakery.Data.Repositories
 				throw new ArgumentNullException(nameof(context));
 			}
 
-			_context = context;
+			this._context = context;
 		}
 
-		public virtual async Task<T> Add(T item)
+		#region Get methods
+
+		//Protected methods
+		protected IQueryable<TEntity> GetAll()
 		{
-			if (item == null)
-				throw new ArgumentNullException(nameof(item));
+			return _context.Set<TEntity>().AsNoTracking();
+		}
+		protected IQueryable<TEntity> GetAllInclude(params Expression<Func<TEntity, object>>[] includeExpressions)
+		{
+			var query = GetAll();
 
-			await _context.AddAsync(item);
-			await _context.SaveChangesAsync();
+			foreach (var include in includeExpressions)
+			{
+				query.Include(include);
+			}
 
-			return item;
+			return query;
+		}
+		protected IQueryable<TEntity> GetAllTracking()
+		{
+			return _context.Set<TEntity>();
+		}
+		protected IQueryable<TEntity> GetAllTrackingInclude(params Expression<Func<TEntity, object>>[] includeExpressions)
+		{
+			var query = _context.Set<TEntity>();
+
+			foreach (var include in includeExpressions)
+			{
+				query.Include(include);
+			}
+
+			return query;
 		}
 
-		public virtual async Task<T> Get(int itemId)
+		//Public methods
+		public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate)
 		{
-			return await _context.Set<T>().FindAsync(itemId);
+			return await _context.Set<TEntity>().FirstOrDefaultAsync(predicate);
+		}
+		public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includeProperties)
+		{
+			return await GetAllInclude(includeProperties).FirstOrDefaultAsync(predicate);
 		}
 
-		public virtual async Task<List<T>> GetAll()
+		public async Task<IEnumerable<TEntity>> GetAllAsync()
 		{
-			return await _context.Set<T>().ToListAsync();
+			return await GetAll().ToListAsync();
+		}
+		public async Task<IEnumerable<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] includeExpressions)
+		{
+			var query = GetAll();
+
+			foreach (var include in includeExpressions)
+			{
+				query = query.Include(include);
+			}
+
+			return await query.ToListAsync();
 		}
 
-		public virtual async Task<T> Update(T item)
+		public async Task<IEnumerable<TEntity>> GetAllTrackingAsync()
 		{
-			_context.Entry(item).State = EntityState.Modified;
+			return await _context.Set<TEntity>().AsQueryable().ToListAsync();
+		}
+		public async Task<IEnumerable<TEntity>> GetAllTrackingAsync(params Expression<Func<TEntity, object>>[] includeExpressions)
+		{
+			var query = _context.Set<TEntity>().AsQueryable();
 
-			await _context.SaveChangesAsync();
+			foreach (var include in includeExpressions)
+			{
+				query = query.Include(include);
+			}
 
-			return item;
+			return await query.ToListAsync();
 		}
 
-		public virtual async Task Delete(int itemId)
+		public async Task<IEnumerable<TEntity>> GetWhereAsync(Expression<Func<TEntity, bool>> whereExpression)
 		{
-			var item = await _context.Set<T>().FindAsync(itemId);
+			return await GetAll().Where(whereExpression).ToListAsync();
+		}
+		public async Task<IEnumerable<TEntity>> GetWhereAsync(Expression<Func<TEntity, bool>> whereExpression, params Expression<Func<TEntity, object>>[] includeExpressions)
+		{
+			return await GetAllInclude(includeExpressions).Where(whereExpression).ToListAsync();
+		}
+		public async Task<IEnumerable<TResult>> GetWhereSelectAsync<TResult>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TResult>> select)
+		{
+			return await GetAll().Where(predicate).Select(select).ToListAsync();
+		}
 
-			if (item == null)
-				throw new ArgumentNullException(nameof(itemId), "Given entity doesn't exist");
+		public IQueryable<TResult> GetQueryableWhereSelect<TResult>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TResult>> select, params Expression<Func<TEntity, object>>[] includeProperties)
+		{
+			var query = GetAll().Where(predicate);
 
-			_context.Set<T>().Remove(item);
+			foreach (var property in includeProperties)
+			{
+				query.Include(property);
+			}
 
-			await _context.SaveChangesAsync();
+			return query.Select(select);
+		}
+		public IQueryable<TResult> GetQueryableSelectAsync<TResult>(Expression<Func<TEntity, TResult>> select, params Expression<Func<TEntity, object>>[] includeProperties)
+		{
+			var query = GetAll();
+
+			if (includeProperties?.Any() == true)
+			{
+				foreach (var property in includeProperties)
+				{
+					query.Include(property);
+				}
+			}
+
+			return query.Select(select);
+		}
+		public IQueryable<TResult> GetQueryableProjection<TResult>(Expression<Func<TEntity, TResult>> projection)
+		{
+			return GetAll().Select(projection);
+		}
+		#endregion
+
+		#region Set methods
+		public async virtual Task<TEntity> AddAsync(TEntity entity)
+		{
+			if (entity == null)
+			{
+				throw new ArgumentNullException(nameof(entity));
+			}
+
+			TryAttachEntity(entity);
+
+			var result = await _context.Set<TEntity>().AddAsync(entity);
+			return result.Entity;
+		}
+		public async virtual Task<IEnumerable<TEntity>> AddRangeAsync(IEnumerable<TEntity> entities)
+		{
+			if (entities == null)
+			{
+				throw new ArgumentNullException(nameof(entities));
+			}
+
+			foreach (var entity in entities)
+			{
+				TryAttachEntity(entity);
+			}
+
+			await _context.Set<TEntity>().AddRangeAsync(entities);
+
+			return entities;
+		}
+
+		public virtual TEntity Update(TEntity entity)
+		{
+			if (entity == null)
+			{
+				throw new ArgumentNullException(nameof(entity));
+			}
+
+			//Attaches the given entity to the context underlying the set. 
+			//That is, the entity is placed into the context in the Unchanged state, just as if it had been read from the database.
+			//Note that entities that are already in the context in some other state will have their state set to Unchanged. 
+			//Attach is a no-op if the entity is already in the context in the Unchanged state. 
+			//See https://msdn.microsoft.com/en-us/library/mt136633%28v=vs.113%29.aspx
+			TryAttachEntity(entity);
+
+			_context.Entry(entity).State = EntityState.Modified;
+
+			return entity;
+		}
+		public virtual async Task<TEntity> UpdateAsync(TEntity entity)
+		{
+			TryAttachEntity(entity);
+
+			_context.Entry(entity).State = EntityState.Modified;
+
+			return await Task.FromResult(entity);
+		}
+		public virtual IEnumerable<TEntity> UpdateRange(IEnumerable<TEntity> entities)
+		{
+			if (entities == null)
+			{
+				throw new ArgumentNullException(nameof(entities));
+			}
+
+			foreach (var entity in entities)
+			{
+				TryAttachEntity(entity);
+
+				_context.Entry(entity).State = EntityState.Modified;
+			}
+
+			return entities;
+		}
+
+		public virtual void Remove(TEntity entity)
+		{
+			if (entity == null)
+			{
+				throw new ArgumentNullException(nameof(entity));
+			}
+
+			TryAttachEntity(entity);
+
+			_context.Set<TEntity>().Remove(entity);
+		}
+		public virtual void RemoveRange(IEnumerable<TEntity> entities)
+		{
+			if (entities == null)
+			{
+				throw new ArgumentNullException(nameof(entities));
+			}
+
+			foreach (var entity in entities)
+			{
+				TryAttachEntity(entity);
+			}
+
+			_context.Set<TEntity>().RemoveRange(entities);
+		}
+		#endregion
+
+		public Task<int> CountAllAsync()
+		{
+			return GetAll().CountAsync();
+		}
+		public Task<int> CountWhereAsync(Expression<Func<TEntity, bool>> predicate)
+		{
+			return GetAll().CountAsync(predicate);
+		}
+
+		public async Task<bool> ExistsWhereAsync(Expression<Func<TEntity, bool>> predicate)
+		{
+			return await GetAll().AnyAsync(predicate);
+		}
+
+		public async Task<bool> CommitAsync()
+		{
+			return await _context.SaveChangesAsync() > 0;
+		}
+
+		private void TryAttachEntity(TEntity entity)
+		{
+			try
+			{
+				_context.Set<TEntity>().Attach(entity);
+			}
+			catch (Exception)
+			{
+				// Even with .AsNoTracking, entities are attached to the context
+				// If entity could not be attached to context, ignore the exception and continue with following steps
+			}
 		}
 	}
 }

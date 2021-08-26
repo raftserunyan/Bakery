@@ -25,8 +25,6 @@ namespace Bakery.Data.Model.Data
 
 		}
 
-
-
 		public DbSet<Customer> Customers { get; set; }
 
 		public DbSet<Notification> Notifications { get; set; }

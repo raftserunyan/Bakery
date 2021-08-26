@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Bakery.Data.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bakery.Controllers
@@ -10,6 +8,14 @@ namespace Bakery.Controllers
 	[ApiController]
 	public class IdentityController : ControllerBase 
 	{
+		private readonly IUnitOfWork _uow;
+
+		public IdentityController(IUnitOfWork uow)
+		{
+			_uow = uow;
+		}
+
+
 		[HttpPost("RegisterUser")]
 		public async Task<IActionResult> RegisterUser()
 		{
@@ -20,24 +26,6 @@ namespace Bakery.Controllers
 		public async Task<IActionResult> LogIn(int id)
 		{
 			return Ok();
-		}
-
-		// POST api/<IdentiryController>
-		[HttpPost]
-		public void Post([FromBody] string value)
-		{
-		}
-
-		// PUT api/<IdentiryController>/5
-		[HttpPut("{id}")]
-		public void Put(int id, [FromBody] string value)
-		{
-		}
-
-		// DELETE api/<IdentiryController>/5
-		[HttpDelete("{id}")]
-		public void Delete(int id)
-		{
 		}
 	}
 }
