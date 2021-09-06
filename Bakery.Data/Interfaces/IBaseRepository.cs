@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -20,10 +19,6 @@ namespace Bakery.Data.Interfaces
 		Task<IEnumerable<TEntity>> GetWhereAsync(Expression<Func<TEntity, bool>> whereExpression);
 		Task<IEnumerable<TEntity>> GetWhereAsync(Expression<Func<TEntity, bool>> whereExpression, params Expression<Func<TEntity, object>>[] includeExpressions);
 		Task<IEnumerable<TResult>> GetWhereSelectAsync<TResult>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TResult>> select);
-
-		IQueryable<TResult> GetQueryableWhereSelect<TResult>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TResult>> select, params Expression<Func<TEntity, object>>[] includeProperties);
-		IQueryable<TResult> GetQueryableSelectAsync<TResult>(Expression<Func<TEntity, TResult>> select, params Expression<Func<TEntity, object>>[] includeProperties);
-		IQueryable<TResult> GetQueryableProjection<TResult>(Expression<Func<TEntity, TResult>> projection);
 
 		Task<TEntity> AddAsync(TEntity entity);
 		Task<IEnumerable<TEntity>> AddRangeAsync(IEnumerable<TEntity> entities);

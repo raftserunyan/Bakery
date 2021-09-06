@@ -2,7 +2,7 @@
 
 namespace Bakery.Model
 {
-    public class SignInViewModel
-    {
-    }
+	public class ProductDto
+	{
+	}
 }

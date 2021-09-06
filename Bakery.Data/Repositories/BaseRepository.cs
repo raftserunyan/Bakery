@@ -57,6 +57,36 @@ namespace Bakery.Data.Repositories
 			return query;
 		}
 
+		protected IQueryable<TResult> GetQueryableWhereSelect<TResult>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TResult>> select, params Expression<Func<TEntity, object>>[] includeProperties)
+		{
+			var query = GetAll().Where(predicate);
+
+			foreach (var property in includeProperties)
+			{
+				query.Include(property);
+			}
+
+			return query.Select(select);
+		}
+		protected IQueryable<TResult> GetQueryableSelectAsync<TResult>(Expression<Func<TEntity, TResult>> select, params Expression<Func<TEntity, object>>[] includeProperties)
+		{
+			var query = GetAll();
+
+			if (includeProperties?.Any() == true)
+			{
+				foreach (var property in includeProperties)
+				{
+					query.Include(property);
+				}
+			}
+
+			return query.Select(select);
+		}
+		protected IQueryable<TResult> GetQueryableProjection<TResult>(Expression<Func<TEntity, TResult>> projection)
+		{
+			return GetAll().Select(projection);
+		}
+
 		//Public methods
 		public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate)
 		{
@@ -112,35 +142,7 @@ namespace Bakery.Data.Repositories
 			return await GetAll().Where(predicate).Select(select).ToListAsync();
 		}
 
-		public IQueryable<TResult> GetQueryableWhereSelect<TResult>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TResult>> select, params Expression<Func<TEntity, object>>[] includeProperties)
-		{
-			var query = GetAll().Where(predicate);
-
-			foreach (var property in includeProperties)
-			{
-				query.Include(property);
-			}
-
-			return query.Select(select);
-		}
-		public IQueryable<TResult> GetQueryableSelectAsync<TResult>(Expression<Func<TEntity, TResult>> select, params Expression<Func<TEntity, object>>[] includeProperties)
-		{
-			var query = GetAll();
-
-			if (includeProperties?.Any() == true)
-			{
-				foreach (var property in includeProperties)
-				{
-					query.Include(property);
-				}
-			}
-
-			return query.Select(select);
-		}
-		public IQueryable<TResult> GetQueryableProjection<TResult>(Expression<Func<TEntity, TResult>> projection)
-		{
-			return GetAll().Select(projection);
-		}
+		
 		#endregion
 
 		#region Set methods

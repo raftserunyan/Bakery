@@ -2,7 +2,7 @@
 
 namespace Bakery.Model
 {
-    public class RegisterViewModel
+    public class RegisterDto
     {
 
     }

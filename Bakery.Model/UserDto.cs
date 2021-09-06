@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bakery.Model
 {
-    public class UserViewModel
+    public class UserDto
     {
     }
 }
